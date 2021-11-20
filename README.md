@@ -6,8 +6,10 @@
 ### Node
 
 ```
-  npm run build
-  npm run start
+  npm run devbuild
+  npm run devstart
+  npm run prodbuild
+  npm run prodstart
 ```
 
 在本地启动项目 [http://localhost:9000/](http://localhost:9000/)

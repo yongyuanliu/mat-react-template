@@ -5,9 +5,9 @@
   "private": true,
   "scripts": {
     "devbuild": "set NODE_ENV=development&&webpack --config webpack.config.js",
-    "devstart": "set NODE_ENV=development&&webpack serve --config webpack.config.js",
+    "devstart": "set NODE_ENV=development&&webpack serve --config webpack.config.js --history-api-fallback",
     "prodbuild": "set NODE_ENV=production&&webpack --config webpack.config.js",
-    "prodstart": "set NODE_ENV=production&&webpack serve --config webpack.config.js",
+    "prodstart": "set NODE_ENV=production&&webpack serve --config webpack.config.js --history-api-fallback",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
