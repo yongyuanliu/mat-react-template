@@ -2,7 +2,9 @@
  * module import
  */
 const path = require('path');
-const htmlWebpackPlugin = require('html-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
 
 /**
  * const variables init
@@ -29,10 +31,7 @@ function getAndCheckWebpackMode() {
     if (isProduction) {
         return production;
     }
-    if (isDevelopment) {
-        return development;
-    }
-    throw new Error(`check the NODE_ENV, must be ${production} or ${development} `)
+    throw new Error(`check the NODE_ENV, must be ${production}`);
 }
 
 /**
@@ -68,17 +67,22 @@ const webpackConfig = {
             },
             {
                 test: /\.m?(sa|sc|c)ss$/i,
-                use: [ 'style-loader', 'css-loader' ]
+                use: [MiniCssExtractPlugin.loader, 'css-loader']
             }
         ]
     },
     plugins: [
-        new htmlWebpackPlugin({
+        new HtmlWebpackPlugin({
             template: './entry-01/template.html',
             filename: 'index.html',
             title: 'Hello World!',
             chunks: ['entry01']
-        })
+        }),
+        new MiniCssExtractPlugin({
+            linkType: 'text/css',
+            filename: '[name].contenthash.css',
+            chunkFilename: '[id].contenthash.css'
+        }),
     ],
     performance: {
         hints: "warning", // 枚举
@@ -91,6 +95,9 @@ const webpackConfig = {
         }
     },
     optimization: {
+        minimizer: [
+            new CssMinimizerPlugin(),
+        ],
         splitChunks: {
             chunks: 'async',
             minSize: 20000,
@@ -100,15 +107,15 @@ const webpackConfig = {
             maxInitialRequests: 30,
             enforceSizeThreshold: 50000,
             cacheGroups: {
-                defaultVendors: {
-                    test: /[\\/]node_modules[\\/]/,
-                    priority: -10,
-                    reuseExistingChunk: true,
+                react: {
+                    test: /[\\/]node_modules[\\/]((react).*)[\\/]/,
+                    name: "react",
+                    chunks: "all"
                 },
-                default: {
-                    minChunks: 2,
-                    priority: -20,
-                    reuseExistingChunk: true,
+                commons: {
+                    test: /[\\/]node_modules[\\/]((?!react).*)[\\/]/,
+                    name: 'commons',
+                    chunks: 'all',
                 },
             },
         },
