@@ -2,6 +2,7 @@
   "name": "mat-react-template",
   "version": "1.0.0",
   "description": "react template",
+  "private":true,
   "scripts": {
     "devbuild": "set NODE_ENV=development&&webpack --config webpack.config.js",
     "devstart": "set NODE_ENV=development&&webpack serve --config webpack.config.js --history-api-fallback",
